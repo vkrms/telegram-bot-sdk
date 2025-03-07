@@ -30,6 +30,20 @@ To facilitate upgrades, we rarely make backward-incompatible changes.
 | 3.x     | ✅ (current)                          | 🚧 [docs][link-v3-docs] |
 | 4.x     | ✅ ([in development][link-new-repo])  | ❌                      |
 
+## On-the-fly Bot Instance Creation
+
+You can create a bot instance on-the-fly using the `createBotInstance` method of the `BotsManager` class. This method allows you to create a bot instance with a dynamic token.
+
+```php
+use Telegram\Bot\BotsManager;
+
+$botsManager = new BotsManager($config);
+
+$botToken = 'YOUR_DYNAMIC_BOT_TOKEN';
+
+$bot = $botsManager->createBotInstance(null, $botToken);
+```
+
 ## Documentation
 
 Documentation for the SDK can be found on the [website][link-docs].

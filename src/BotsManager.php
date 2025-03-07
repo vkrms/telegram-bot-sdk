@@ -150,11 +150,12 @@ final class BotsManager
      *
      * @throws TelegramSDKException
      */
-    protected function makeBot(string $name, ?string $token = null): Api
+    protected function makeBot(?string $name, ?string $token = null): Api
     {
-        $config = $this->getBotConfig($name);
-
-        $token = $token ?? data_get($config, 'token');
+        if ($name !== null) {
+            $config = $this->getBotConfig($name);
+            $token = data_get($config, 'token');
+        }
 
         $telegram = new Api(
             $token,
