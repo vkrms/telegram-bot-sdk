@@ -150,11 +150,17 @@ final class BotsManager
      *
      * @throws TelegramSDKException
      */
-    protected function makeBot(?string $name, ?string $token = null): Api
+    protected function makeBot(?string $name = null, ?string $token = null): Api
     {
         if ($name !== null) {
             $config = $this->getBotConfig($name);
             $token = data_get($config, 'token');
+
+            $commands = data_get($config, 'commands', []);
+            $commands = $this->parseBotCommands($commands);
+    
+            // Register Commands
+            $telegram->addCommands($commands);
         }
 
         $telegram = new Api(
@@ -169,12 +175,6 @@ final class BotsManager
             $telegram::setContainer($this->container);
         }
 
-        $commands = data_get($config, 'commands', []);
-        $commands = $this->parseBotCommands($commands);
-
-        // Register Commands
-        $telegram->addCommands($commands);
-
         return $telegram;
     }
 
@@ -183,7 +183,7 @@ final class BotsManager
      *
      * @throws TelegramSDKException
      */
-    public function createBotInstance(string $name, string $token): Api
+    public function createBotInstance(?string $name, string $token): Api
     {
         return $this->makeBot($name, $token);
     }
